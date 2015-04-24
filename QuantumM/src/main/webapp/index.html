@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Example - example-example16-production</title>
+<!-- <script
+	src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-rc.0/angular.min.js"></script>  -->
+<script src="js/framework/angular.min.js"></script>	
+<script src="js/framework/jquery.min.js"></script>
+<script src="js/framework/angular.min.js.map"></script>
+<script src="js/framework/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="styling/bootstrap.min.css">
+
+<script src="js/contextMenu.js"></script>
+<script src="js/services/tableService.js"></script>
+<script src="js/asa.js"></script>
+<link rel="stylesheet" type="text/css" href="styling/asa.css">
+
+<!-- Latest compiled and minified CSS -->
+<!-- <link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+jQuery library
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<!-- <script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+</head>
+<body>
+	<div ng-app="testApp" ng-controller="ListController">
+		<div>
+			<strong>Gold: </strong> {{player.gold}}
+		</div>
+		<div class="list-group">
+			<table border="1" style="width: 100%" id="tblx1">
+				<tr>
+					<td context-menu="menuOptions" id="tx1">1</td>
+
+					<td>2</td>
+				</tr>
+			</table>
+			<input type="button" value="Read" ng-click="readAll()">			
+		</div>
+	</div>
+</body>
+</html>
