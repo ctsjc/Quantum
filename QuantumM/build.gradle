@@ -20,6 +20,8 @@ repositories {
 dependencies {
 	compile 'ch.qos.logback:logback-classic:1.1.2'
 	compile 'org.springframework:spring-webmvc:4.0.6.RELEASE'
+	compile 'org.apache.commons:commons-lang3:3.0'
+
 	compile 'jstl:jstl:1.2'
 	//include in compile only, exclude in the war
 	providedCompile 'javax.servlet:servlet-api:2.5'

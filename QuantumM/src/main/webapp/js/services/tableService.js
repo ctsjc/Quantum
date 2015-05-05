@@ -56,8 +56,8 @@ function readTable(familyArray){
     	if(Object.prototype.toString.call( familyArray[v] ) === '[object Object]' ){
     		readTable( familyArray[v]);
     	}
-    	var id = angular.element(familyArray[v]);
-    	var ele = document.getElementById(id[0]);
+//    	var id = angular.element(familyArray[v]);
+    	var ele = document.getElementById(familyArray[v]);
     	if ((ele !== undefined) && (ele !== null) && (ele.value !== undefined)) {
     		familyArray[v]=ele.value;
     	}

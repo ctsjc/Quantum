@@ -1,9 +1,9 @@
 angular.module('testApp', [])
 
 .directive('contextMenu', function ($parse) {
-	var renderContextMenu = function ($scope, event, options) {
+	var renderContextMenu = function ($scope, $event, options) {
 		if (!$) { var $ = angular.element; }
-		$(event.currentTarget).addClass('context');
+		$($event.currentTarget).addClass('context');
 		var $contextMenu = $('<div>');
 		$contextMenu.addClass('dropdown clearfix');
 		var $ul = $('<ul>');
@@ -12,18 +12,18 @@ angular.module('testApp', [])
 		$ul.css({
 			display: 'block',
 			position: 'absolute',
-			left: event.pageX + 'px',
-			top: event.pageY + 'px'
+			left: $event.pageX + 'px',
+			top: $event.pageY + 'px'
 		});
 		angular.forEach(options, function (item, i) {
-			console.log('---6---'+event.srcElement.id);
-			var $srcTdId=event.srcElement.id;
-			if(event.srcElement.tagName === 'TEXTAREA'){
-				$srcTdId=event.srcElement.parentElement.id;
+			console.log('---6---'+$event.srcElement.id);
+			var $srcTdId=$event.srcElement.id;
+			if($event.srcElement.tagName === 'TEXTAREA'){
+				$srcTdId=$event.srcElement.parentElement.id;
 			}
 			
-			var $srcTrId = event.srcElement.parentElement.parentElement.id;
-			var $srcTblId = event.srcElement.parentElement.parentElement.parentElement.parentElement.id;
+			var $srcTrId = $event.srcElement.parentElement.parentElement.id;
+			var $srcTblId = $event.srcElement.parentElement.parentElement.parentElement.parentElement.id;
 			var $li = $('<li>');
 			if (item === null) {
 				$li.addClass('divider');

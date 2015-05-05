@@ -10,64 +10,13 @@ app.run(function($window) {
         event.preventDefault();
     });
 });
-app.controller('ListController', ['$scope','$compile','$element',
-                                  function ($scope,$compile,$element) {
+app.controller('ListController', ['$scope','$compile','$element','$http',
+                                  function ($scope,$compile,$element,$http) {
 	
 	$scope.familyArray=new Object();
 	$scope.idid = 1000;
 	
-	/*function cascadeTable(familyArray,parentId,childArray){
-		if(Object.keys(familyArray).length === 0 ){// If family is empty... then add childArray as a family
-	    	familyArray=childArray;
-	    }else{
-				// search srcTdId in the sbsb, and replace it with sxb
-	    	var updatedParentId=parseInt(parentId)+1;
-    	    for( v in familyArray){
-    	    	//there is a issue in this code, if v is itself a table, then we can not search into it.
-    	    	if(Object.prototype.toString.call( familyArray[v] ) === '[object Object]' ){
-    	    		cascadeTable( familyArray[v],parentId,childArray);
-    	    	}
-    	    	if(familyArray[v] === updatedParentId){
-    	    		familyArray[v] = childArray;
-    	    	}
-    	    }
-	    }
-		return familyArray;
-	}*/
-	
-	/*function appendTable(familyArray,parentId,childArray){
-    	for( v in familyArray){
-	    	//there is a issue in this code, if v is itself a table, then we can not search into it.
-	    	if(Object.prototype.toString.call( familyArray[v] ) === '[object Object]' ){
-	    		appendTable( familyArray[v],parentId,childArray);
-	    	}
-	    	if(familyArray.table === parseInt(parentId) ){
-	    		
-	    		// apend to familyArray with childArray
-	    		
-	    		var row_name = 'r1_'+childArray.a.row;
-	    		familyArray[row_name]=childArray.a;
-	    		
-	    		row_name = 'r2_'+childArray.b.row;
-	    		familyArray[row_name]=childArray.b;
-	    	}
-	    }
-    	return familyArray;
-    }//end of appendTable
-
-	function removeFromTable(familyArray,parentId){
-    	for( v in familyArray){
-	    	//there is a issue in this code, if v is itself a table, then we can not search into it.
-	    	if(Object.prototype.toString.call( familyArray[v] ) === '[object Object]' ){
-	    		appendTable( familyArray[v],parentId,childArray);
-	    	}
-	    	if(familyArray.table === parseInt(parentId) ){
-	    		
-	    	}
-	    }
-    	return familyArray;
-    }//end of appendTable
-*/		
+		
 	$scope.menuOptions = [
 	                      ['ADD TABLE', function ($itemScope,$srcTdId) {
 	                  		console.log('---ADD--- id :: '+$srcTdId+' ---');
@@ -164,24 +113,25 @@ app.controller('ListController', ['$scope','$compile','$element',
 	                    	  angular.element(result).empty().append( el );*/
 	                      }]
 	                      ];//end of menuOption
+	
+	// Read button Handler
 	$scope.readAll=function(){
 		$scope.clnfamilyArray={};
 		angular.copy($scope.familyArray, $scope.clnfamilyArray);
 		readTable($scope.clnfamilyArray);
-		/*function readTable(familyArray){
-		    for( v in familyArray){
-		    	//there is a issue in this code, if v is itself a table, then we can not search into it.
-		    	if(Object.prototype.toString.call( familyArray[v] ) === '[object Object]' ){
-		    		readTable( familyArray[v]);
-		    	}
-		    	var id = angular.element(familyArray[v]);
-		    	var ele = document.getElementById(id[0]);
-		    	if ((ele !== undefined) && (ele !== null) && (ele.value !== undefined)) {
-		    		familyArray[v]=ele.value;
-		    	}
-		    }//end of for
-		}//end of readTable
-*/	    console.log($scope.clnfamilyArray);
+		console.log($scope.clnfamilyArray);
+		//send data to server
+		testAddItem=function(){
+		    $http({
+		        'url' : 'http://localhost:9090/QuantumM/orbital/sendstatement/',
+		        'method' : 'POST',
+		        'headers': {'Content-Type' : 'application/json'},
+		        'data' : $scope.clnfamilyArray
+		    }).success(function(data){
+		        console.log(data);
+		    })
+		}//end of function
+		testAddItem();
 	}////end of readAll
 }//end of controller
 ]);
