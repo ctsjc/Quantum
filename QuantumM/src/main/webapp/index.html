@@ -31,16 +31,22 @@ jQuery library
 		<div>
 			<strong>Gold: </strong> {{player.gold}}
 		</div>
-		<div class="list-group">
-			<table border="1" style="width: 100%" id="tblx1">
+		<div class="list-group"  context-menu="menuOptions"  style="margin-bottom: 1em; overflow: auto;">
+		    
+		    <p  id="tblx1" align="center" style="width: 100%; background-color: red; height: 100%">RIGHT CLICK ME</p>
+			<!-- <table border="1" style="width: 100%" id="tblx1">
 				<tr>
 					<td context-menu="menuOptions" id="tx1">1</td>
 
 					<td>2</td>
 				</tr>
-			</table>
-			<input type="button" value="Read" ng-click="readAll()">			
+			</table> -->
+			<input type="button" value="Read" ng-click="readAll()">		
+			<div>
+				<div id="ress"/>
+			</div>
 		</div>
+		<a href="orbital/hello/mkyong">Link</a>
 	</div>
 </body>
 </html>

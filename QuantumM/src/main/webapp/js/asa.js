@@ -10,8 +10,8 @@ app.run(function($window) {
         event.preventDefault();
     });
 });
-app.controller('ListController', ['$scope','$compile','$element','$http',
-                                  function ($scope,$compile,$element,$http) {
+app.controller('ListController', ['$scope','$compile','$element','$http','$compile',
+                                  function ($scope,$compile,$element,$http,$compile) {
 	
 	$scope.familyArray=new Object();
 	$scope.idid = 1000;
@@ -56,9 +56,9 @@ app.controller('ListController', ['$scope','$compile','$element','$http',
 	                    	  console.log('TABLE :: '+tid);
 	                    	    var sxb=new Object();
 	                    	    sxb.table=tid;
-	                    	    sxb.a ={row:tr1, val:tx1};;
-	                    	    sxb.b={row:tr2, val:tx21};
-	                    	    sxb.c={row:tr2, val:tx22};;
+	                    	    sxb.a ={tbl:tid,row:tr1, val:tx1};;
+	                    	    sxb.b={tbl:tid,row:tr2, val:tx21};
+	                    	    sxb.c={tbl:tid,row:tr2, val:tx22};;
 	                    	    $scope.familyArray=cascadeTable($scope.familyArray,$srcTdId, sxb);
 	                    	                      				
                   				console.log('SBSB :: '+JSON.stringify($scope.familyArray));
@@ -86,8 +86,8 @@ app.controller('ListController', ['$scope','$compile','$element','$http',
 		                    	  
 		                    	  var sxb=new Object();		
 		                    	  	sxb.row=tr1;
-		                    	  	sxb.a={row:tr1, val:tx1};
-		                    	  	sxb.b={row:tr1, val:tx2};
+		                    	  	sxb.a={tbl:$srcTblId,row:tr1, val:tx1};
+		                    	  	sxb.b={tbl:$srcTblId,row:tr1, val:tx2};
 		                    	    $scope.familyArray=appendTable($scope.familyArray,$srcTblId,sxb);
 		                    	    
 	                  				console.log(($scope.familyArray));
@@ -119,7 +119,6 @@ app.controller('ListController', ['$scope','$compile','$element','$http',
 		$scope.clnfamilyArray={};
 		angular.copy($scope.familyArray, $scope.clnfamilyArray);
 		readTable($scope.clnfamilyArray);
-		console.log($scope.clnfamilyArray);
 		//send data to server
 		testAddItem=function(){
 		    $http({
@@ -127,14 +126,18 @@ app.controller('ListController', ['$scope','$compile','$element','$http',
 		        'method' : 'POST',
 		        'headers': {'Content-Type' : 'application/json'},
 		        'data' : $scope.clnfamilyArray
-		    }).success(function(data){
+		    }).success(function(data){		    	
 		        console.log(data);
+		        //phold
+//		        $scope.res=$compile(data);
+          	  	var result = document.getElementById("ress");
+          	  	angular.element(result).empty().append( data);
 		    })
 		}//end of function
 		testAddItem();
 	}////end of readAll
 }//end of controller
-]);
+]);//end of controller 
 
 
 

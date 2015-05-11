@@ -1,45 +1,35 @@
 package com.statement.logic;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.model.conv.HTable;
 import com.model.converter.HtmlGenerator;
 import com.model.parser.JCOL;
 import com.model.parser.JElement;
 import com.model.parser.JTable;
 
 public class Parser {
+	List<String> predefinedColumns;
+	public Parser(String input) {
+		TagFinder finder=new TagFinder();
+		predefinedColumns=finder.find(input);
+	}
+
 	public static void main(String[] args) {
-		Parser p =new Parser();
-	/*	String jsn=""
-				+ "{table:1000,"
-				+ "a:{row:1001,val: a},"
-				+ "b:{row:1004,val: b},"
-				+ "c:{row:1004,val:"
-				+ "{table:1009,"
-				+ "a:{row:1010,val: cc},"
-				+ "b:{row:1013,val: bb},"
-				+ "c:{row:1013,val: vv}}},"
-				+ "d:{row:1004,val: d}};";
-	*/
-		String jsn="{table:1000,a:{row:1001,val: roman},b:{row:1004,val:greek },c:{row:1004,val:{table:1009,a:{row:1010,val:hindu },b:{row:1013,val:egyptian },c:{row:1013,val:{table:1023,a:{row:1024,val:chinease },b:{row:1027,val:japanese },c:{row:1027,val:americans }}},r1_1018:{row:1018,val:{table:1032,a:{row:1033,val:british },b:{row:1036,val:french },c:{row:1036,val:german }}},r2_1018:{row:1018,val:russian },r1_1041:{row:1041,val:mongol },r2_1041:{row:1041,val:Vikings }}}}";
-
-		
-		
-		
-		//String jsn="{table:1000,a:{tbl:1000,row:1001,val: a},b:{tbl:1000,row:1004,val: b},c:{tbl:1000,row:1004,val:{table:1009,a:{tbl:1009,row:1010,val: r},b:{tbl:1009,row:1013,val: t},c:{tbl:1009,row:1013,val: y},r1_1018:{tbl:1009,row:1018,val:{table:1023,a:{tbl:1023,row:1024,val: o},b:{tbl:1023,row:1027,val: p},c:{tbl:1023,row:1027,val: o}}},r2_1018:{tbl:1009,row:1018,val: p}}}}";
-
-				
+		String jsn="{table:1000,a:{tbl:1000,row:1001,val:hindu},b:{tbl:1000,row:1004,val:greek },c:{tbl:1000,row:1004,val:{table:1014,a:{tbl:1014,row:1015,val:egypt },b:{tbl:1014,row:1018,val:norse },c:{tbl:1014,row:1018,val:cicily }}},r1_1009:{tbl:1000,row:1009,val:vikings },r2_1009:{tbl:1000,row:1009,val:roman }}";
+		jsn="{table:1000,a:{tbl:1000,row:1001,val: a},b:{tbl:1000,row:1004,val: b},c:{tbl:1000,row:1004,val:{table:1009,a:{tbl:1009,row:1010,val:q},b:{tbl:1009,row:1013,val: w},c:{tbl:1009,row:1013,val:e},r1_1018:{tbl:1009,row:1018,val:{table:1023,a:{tbl:1023,row:1024,val: c},b:{tbl:1023,row:1027,val:e },c:{tbl:1023,row:1027,val:de}}},r2_1018:{tbl:1009,row:1018,val: dc}}}}";
 		System.out.println(jsn);
+		//find id {a,b,c,r1_10XX
+		Parser p =new Parser(jsn);
 		JTable jTable = (JTable) p.getTable(jsn);
 		HtmlGenerator htmlGenerator=new HtmlGenerator();
 		
-		for(JElement jElement:jTable.getChild()){
-			System.out.println(jElement);
-		}
-		System.out.println("=========================");
-		htmlGenerator.toHtml(jTable);
+		HTable hTable=htmlGenerator.toHtml(jTable);
+		System.out.println(hTable.toHtml());
+		
 	}
 
 	public JElement getTable(String jsn){
@@ -61,7 +51,7 @@ public class Parser {
 				}				
 			}
 			else{
-				current=new JCOL();
+				current=new JCOL(chainOfElements.get(i).elementValue.tbl,chainOfElements.get(i).elementValue.row);
 				//if token value is simple then add it as it is
 				//else if token value is table, then parse it
 				if(StringUtils.contains(chainOfElements.get(i).elementValue.val, "{table:")){
@@ -69,7 +59,7 @@ public class Parser {
 					((JCOL)current).setTable(childTable);
 				}
 				else{
-					((JCOL)current).setValue(chainOfElements.get(i).elementValue.row, chainOfElements.get(i).elementValue.val);
+					((JCOL)current).setValue( chainOfElements.get(i).elementValue.val);
 				}
 				parent.getChild().add(current);				
 			}	
@@ -87,8 +77,7 @@ public class Parser {
 			String valStatment=map.valueStatment;
 			String nextStat="";
 			if(statement.contains(valStatment)){
-
-				nextStat=StringUtils.remove(statement, valStatment);
+				nextStat=StringUtils.removeStart(statement, valStatment);
 
 			}
 			map=findElements(nextStat);
@@ -98,7 +87,7 @@ public class Parser {
 
 
 	private ElementValue getColumnValue(String token,String tokenValue) {
-		String[] tokenSet={
+		/*String[] tokenSet={
 				",a:",
 				",b:",
 				",c:",
@@ -107,17 +96,22 @@ public class Parser {
 
 				",r1_1009:",
 				",r2_1009:",
-		",d:"};
-		ElementValue element =new ElementValue();
+				
+				",r1_1014",
+				",r2_1014",
+		",d:"};			
+*/		
+		
+ 		ElementValue element =new ElementValue();
 		element.val=tokenValue;
-		for(String t : tokenSet){
+		for(String t : predefinedColumns){
 			if(token.equals(t) && tokenValue.contains("val:")){				
 				// Now search for val							
 				int indexOf = tokenValue.indexOf("val:");	
 				element.val=tokenValue.substring(indexOf+"val:".length(),tokenValue.length()-1).trim();
 				// search for row
 				element.row=tokenValue.substring(tokenValue.indexOf("row:")+"row:".length(),indexOf-1).trim();
-
+				element.tbl=tokenValue.substring(tokenValue.indexOf("tbl:")+"tbl:".length(),tokenValue.indexOf("row:")-1).trim();
 				return element;
 			}//end of if
 		}//end of for
@@ -125,7 +119,7 @@ public class Parser {
 	}//end of getColVal
 
 	private ElementInfo findElements(String statmnt) {
-		String[] predefined_Elements={"{table:",
+/*		String[] predefined_Elements={"{table:",
 				",a:",
 				",b:",
 				",c:",
@@ -133,8 +127,13 @@ public class Parser {
 				",r2_1041:",
 				",r1_1009:",
 				",r2_1009:",
+				",r1_1014",
+				",r2_1014",
 				
-		",d:"};
+		",d:"};*/
+		ArrayList<String> predefined_Elements=new ArrayList<String>(predefinedColumns);
+		predefined_Elements.add("{table:");
+		
 		int endIndex=Integer.MAX_VALUE;
 		String token="";
 		String tokenStment="";
@@ -173,6 +172,7 @@ public class Parser {
 	}
 	
 	class ElementValue{
+		String tbl;
 		String row;
 		String val;		
 	}
