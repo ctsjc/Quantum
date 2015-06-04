@@ -1,13 +1,13 @@
 package com.model.conv;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class HTable {
 
 	List<HRow> rows;
 	public HTable() {
-		rows=new ArrayList<HRow>();
+		rows=new CopyOnWriteArrayList<HRow>();
 	}
 	int id;
 	public void setId(int id) {
@@ -57,7 +57,9 @@ public class HTable {
 	}
 	@Override
 	public String toString() {
-		return "HTable [rows=" + rows + ", id=" + id + "]";
+		return "HTable [id=" + id + ", " + (rows != null ? "rows=" + rows : "")
+				+ "]";
 	}
+
 	
 }

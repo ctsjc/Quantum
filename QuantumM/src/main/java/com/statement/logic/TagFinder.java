@@ -20,9 +20,9 @@ public class TagFinder {
 		while (matcher.find())
 			tags.add(matcher.group());
 		
-		tags.add("a");
-		tags.add("b");
-		tags.add("c");
+		tags.add(",a:");
+		tags.add(",b:");
+		tags.add(",c:");
 		return tags;
 	}//end of find
 }//end of class

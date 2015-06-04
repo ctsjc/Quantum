@@ -10,11 +10,6 @@ public class HColumn {
 		this.value = value;
 	}
 
-	
-	@Override
-	public String toString() {
-		return "HColumn [value=" + value + ", childTable=" + childTable + "]";
-	}
 	public String toHtml(int size) {
 		
 		if(value != null){
@@ -32,4 +27,10 @@ public class HColumn {
 	public void setChildTable(HTable childTable) {
 		this.childTable = childTable;
 	}
+	@Override
+	public String toString() {
+		return "HColumn [" + (value != null ? "val=" + value + ", " : "")
+				+ (childTable != null ? "chldTbl=" + childTable : "") + "]";
+	}
+	
 }

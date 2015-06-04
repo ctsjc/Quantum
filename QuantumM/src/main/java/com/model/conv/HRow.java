@@ -1,14 +1,14 @@
 package com.model.conv;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class HRow {
 	List<HColumn> columns;
 	
 	public HRow() {
 		// TODO Auto-generated constructor stub
-		columns=new ArrayList<HColumn>();
+		columns=new CopyOnWriteArrayList<HColumn>();
 	}
 	int id;
 	public void setId(int id) {
@@ -18,11 +18,6 @@ public class HRow {
 		this.id = Integer.parseInt(id);
 	}
 
-	
-	@Override
-	public String toString() {
-		return "HRow [columns=" + columns + ", id=" + id + "]";
-	}
 	public String toHtml() {
 		return "<tr>" + columnHtml() + "</tr>";
 	}
@@ -62,6 +57,11 @@ public class HRow {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return "[id=" + id + ", "
+				+ (columns != null ? "columns=" + columns : "") + "]";
 	}
 	
 	

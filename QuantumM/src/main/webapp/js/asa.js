@@ -125,7 +125,7 @@ app.controller('ListController', ['$scope','$compile','$element','$http','$compi
 		        'url' : 'http://localhost:9090/QuantumM/orbital/sendstatement/',
 		        'method' : 'POST',
 		        'headers': {'Content-Type' : 'application/json'},
-		        'data' : $scope.clnfamilyArray
+		        'data' : {map:$scope.clnfamilyArray}
 		    }).success(function(data){		    	
 		        console.log(data);
 		        //phold

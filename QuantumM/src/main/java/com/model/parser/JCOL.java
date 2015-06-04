@@ -65,5 +65,15 @@ public class JCOL extends JElement {
 		public void setParentRow(String parentRow) {
 			this.parentRow = parentRow;
 		}
+
+		@Override
+		public String toString() {
+			return "JCOL ["
+					+ (parentTbl != null ? "pTbl=" + parentTbl + ", " : "")
+					+ (parentRow != null ? "pRow=" + parentRow + ", " : "")
+					+ (value != null ? "value=" + value + ", " : "")
+					+ (table != null ? "table=" + table : "") + "]";
+		}
+
 		
 }
