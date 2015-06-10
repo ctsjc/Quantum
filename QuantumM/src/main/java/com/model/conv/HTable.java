@@ -57,8 +57,8 @@ public class HTable {
 	}
 	@Override
 	public String toString() {
-		return "HTable [id=" + id + ", " + (rows != null ? "rows=" + rows : "")
-				+ "]";
+		return "HTable {id=" + id + (rows != null ? " rows=" + rows : "")
+				+ "}";
 	}
 
 	

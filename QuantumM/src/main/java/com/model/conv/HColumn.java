@@ -29,8 +29,8 @@ public class HColumn {
 	}
 	@Override
 	public String toString() {
-		return "HColumn [" + (value != null ? "val=" + value + ", " : "")
-				+ (childTable != null ? "chldTbl=" + childTable : "") + "]";
+		return "<" + (value != null ? "" + value + "" : "")
+				+ (childTable != null ? "chldTbl=" + childTable : "") + ">";
 	}
 	
 }
