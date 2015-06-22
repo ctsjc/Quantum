@@ -122,7 +122,7 @@ app.controller('ListController', ['$scope','$compile','$element','$http','$compi
 		//send data to server
 		testAddItem=function(){
 		    $http({
-		        'url' : 'http://localhost:9090/QuantumM/orbital/sendstatement/',
+		        'url' : 'http://localhost:8080/QuantumM/orbital/sendstatement/',
 		        'method' : 'POST',
 		        'headers': {'Content-Type' : 'application/json'},
 		        'data' : {map:$scope.clnfamilyArray}

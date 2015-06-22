@@ -6,6 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class HTable {
 
 	List<HRow> rows;
+	String htmlFormat;
 	public HTable() {
 		rows=new CopyOnWriteArrayList<HRow>();
 	}
@@ -46,7 +47,14 @@ public class HTable {
 		this.rows = rows;
 	}
 	public String toHtml() {
+		htmlFormat =  "<table  border=1>" + rowsHtml() + "</table>";
 		return "<table  border=1>" + rowsHtml() + "</table>";
+	}
+	public String getHtmlFormat() {
+		return htmlFormat;
+	}
+	public void setHtmlFormat(String htmlFormat) {
+		this.htmlFormat = htmlFormat;
 	}
 	private String rowsHtml() {
 		String htmlFormat="";

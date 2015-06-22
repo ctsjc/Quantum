@@ -1,0 +1,1 @@
+select val from dbprime.ragnar where tbl=(SELECT tbl FROM dbprime.ragnar where val='CCEA' and type='TERM') and type='QUES'

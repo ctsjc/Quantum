@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.model.conv.HColumn;
-import com.model.conv.HRow;
 import com.model.conv.HTable;
 import com.model.converter.HtmlGenerator;
 import com.model.parser.JCOL;
@@ -30,6 +28,7 @@ public class Parser {
 		jsn="{map:{table:1000,a:{tbl:1000,row:1001,val: r},b:{tbl:1000,row:1004,val: r},c:{tbl:1000,row:1004,val: r}}}";
 		jsn="{map:{table:1000,a:{tbl:1000,row:1001,val: a},b:{tbl:1000,row:1004,val:b },c:{tbl:1000,row:1004,val:c }}}";
 		jsn="{map:{table:1000,a:{tbl:1000,row:1001,val: A},b:{tbl:1000,row:1004,val:B },c:{tbl:1000,row:1004,val:{table:1009,a:{tbl:1009,row:1010,val:{table:1018,a:{tbl:1018,row:1019,val:C },b:{tbl:1018,row:1022,val:D },c:{tbl:1018,row:1022,val:E },r1_1027:{tbl:1018,row:1027,val: H},r2_1027:{tbl:1018,row:1027,val:I }}},b:{tbl:1009,row:1013,val:F },c:{tbl:1009,row:1013,val:{table:1032,a:{tbl:1032,row:1033,val: J},b:{tbl:1032,row:1036,val:K },c:{tbl:1032,row:1036,val:L }}}}}}}";
+		jsn="{map:{table:1000,a:{tbl:1000,row:1001,val: a},b:{tbl:1000,row:1004,val:b },c:{tbl:1000,row:1004,val:{table:1009,a:{tbl:1009,row:1010,val: c},b:{tbl:1009,row:1013,val:d },c:{tbl:1009,row:1013,val:e }}}}}";
 
 		System.out.println(jsn);
 		//find id {a,b,c,r1_10XX
@@ -40,7 +39,8 @@ public class Parser {
 		HtmlGenerator htmlGenerator=new HtmlGenerator();
 
 		HTable hTable=htmlGenerator.toHtml(jTable);
-		System.out.println(hTable.toHtml());
+		System.out.println("HTML Format :: "+hTable.toHtml());
+//		dbTransformer.insertRows(hTable);
 	}
 	public JElement getTable(){
 		return getTable(input);

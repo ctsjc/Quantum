@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.model.conv.HTable;
@@ -32,7 +31,6 @@ public class StatmentBlockController {
 	}
 	@RequestMapping(value = "/sendstatement/", method = RequestMethod.POST)	
 	public ModelAndView welcome(@RequestBody String map) {
-		System.out.println("I am Called");
 		ModelAndView model = new ModelAndView();
 		HTable hTable=null;
 		if(map!= null && !map.isEmpty()){
@@ -42,7 +40,9 @@ public class StatmentBlockController {
 			JTable jTable = (JTable) parser.getTable();
 			HtmlGenerator htmlGenerator=new HtmlGenerator();
 			hTable=htmlGenerator.toHtml(jTable);
+			
 			model.addObject("name",hTable.toHtml());
+			System.out.println(hTable.getHtmlFormat().isEmpty()?hTable.getHtmlFormat():hTable.getHtmlFormat());
 		}//end of if
 		model.setViewName("test");	
 		return model;
