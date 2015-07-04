@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.db.modal.RagnarRw;
 
-public class JDBCExample {
+public class RagnarDTO {
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	static final String DB_URL = "jdbc:mysql://localhost/dbprime";
@@ -17,7 +17,7 @@ public class JDBCExample {
 	static final String USER = "root";
 	static final String PASS = "";
 
-	public JDBCExample() {
+	public RagnarDTO() {
 		try {
 			connect();
 			
@@ -27,9 +27,12 @@ public class JDBCExample {
 			"`row`,"+
 			"`val`,"+
 			"`ref`,"+
-			"`type`)"+
+			"`type`,"+
+			"`sentenceId`"+
+			 ")"+
 			"VALUES"+
 			"(?,"+
+			"?,"+
 			"?,"+
 			"?,"+
 			"?,"+
@@ -42,6 +45,9 @@ public class JDBCExample {
 		}
 	}
 	
+	void getRagnarIndex(){
+		
+	}
 	public void insert(List<RagnarRw> rows) {
 		for(RagnarRw row : rows)
 			insert(row);
@@ -55,6 +61,7 @@ public class JDBCExample {
 			stmt.setString(3, row.getVal());
 			stmt.setString(4, row.getRefTable());
 			stmt.setString(5, row.getD().toString());
+			stmt.setString(6, row.getSenteceId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

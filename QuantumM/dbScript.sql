@@ -1,5 +1,4 @@
 CREATE DATABASE `dbprime` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `val` varchar(45) DEFAULT NULL,
@@ -31,8 +30,17 @@ CREATE TABLE `ragnar` (
   `val` varchar(45) DEFAULT NULL,
   `ref` int(11) DEFAULT NULL,
   `type` varchar(45) DEFAULT NULL,
+  `sentenceId` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `sentence` (
+  `sentenceId` varchar(45) NOT NULL,
+  `text` text,
+  `structure` varchar(45) DEFAULT NULL,
+  `psgId` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`sentenceId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='		';
 
 CREATE TABLE `term_categories` (
   `id` varchar(45) NOT NULL,

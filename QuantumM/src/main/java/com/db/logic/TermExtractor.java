@@ -3,7 +3,9 @@ package com.db.logic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import com.db.modal.D;
 import com.db.modal.RagnarRw;
@@ -29,9 +31,15 @@ public class TermExtractor {
 		JTable jTable = (JTable) p.getTable();
 		List<RagnarRw> rows=new ArrayList<RagnarRw>();
 		RowGenerator gen=new RowGenerator();
-		gen.parse(jTable, rows);
+		gen.parse(jTable, rows,UUID.randomUUID().toString());
+		
 		TermExtractor dExtractor=new TermExtractor();
-		HashMap<String, List<String>> tq=dExtractor.getTermQuestions(rows);
+		dExtractor.insert(rows);
+		dExtractor.termsAndQuestionsFromDatabase(rows );//end of for		
+	}//end of main
+
+	public void insert(List<RagnarRw> rows) {
+		HashMap<String, List<String>> tq=this.getTermQuestions(rows);
 		List<Witwicky> witwickies=new ArrayList<Witwicky>();
 		List<T> terms=new ArrayList<T>();
 		List<T> quess=new ArrayList<T>();
@@ -49,18 +57,18 @@ public class TermExtractor {
 		String termId=null;
 		for(T tr:terms){
 			System.out.println(tr.getVal()+"\t"+tq.get(tr.getVal()));
+			System.out.println(">>> "+dao.getTermQuestions(tr.getVal()).get(tr.getVal()));
 			// check term in
 			termId= dao.getTermId(tr);
 			if(dao.isTermPresent(tr)){
-				dExtractor.addQuestions(termId,tq.get(tr.getVal()));
+				this.addQuestions(termId,tq.get(tr.getVal()));
 			}else{
 				dao.insertTerm(tr);
 				termId=dao.getTermId(tr);
-				dExtractor.addQuestions(termId,tq.get(tr.getVal()));
+				this.addQuestions(termId,tq.get(tr.getVal()));
 			}//end of else
-		}//end of for
-		
-	}//end of main
+		}
+	}
 	
 	private void addQuestions(String termId, List<String> questions) {
 			TermDAO dao=new TermDAO();
@@ -68,7 +76,6 @@ public class TermExtractor {
 				
 				T q = new T(ques);
 				if(dao.isQuestionPresent(q)){
-					
 					dao.addWitiwik(termId,dao.getQuesId(q));
 				}
 				else{
@@ -103,4 +110,17 @@ public class TermExtractor {
 		}//end of for
 		return questions;
 	}//end of method
+	
+	public List<Map<String, List<String>>> termsAndQuestionsFromDatabase(List<RagnarRw> rows){
+		List<Map<String, List<String>>> list=new ArrayList<Map<String,List<String>>>();
+		TermDAO dao=new TermDAO();
+		//iterate and find rows
+		for(RagnarRw row:rows){
+			if(row.getD() == D.TERM){
+				list.add(dao.getTermQuestions(row.getVal()));
+			}
+		}//end of for
+		
+		return list;
+	}
 }//end of class

@@ -16,14 +16,14 @@ angular.module('testApp', [])
 			top: $event.pageY + 'px'
 		});
 		angular.forEach(options, function (item, i) {
-			console.log('---6---'+$event.srcElement.id);
-			var $srcTdId=$event.srcElement.id;
-			if($event.srcElement.tagName === 'TEXTAREA'){
-				$srcTdId=$event.srcElement.parentElement.id;
+			console.log('---6---'+$event.target .id);
+			var $srcTdId=$event.target .id;
+			if($event.target .tagName === 'TEXTAREA'){
+				$srcTdId=$event.target .parentElement.id;
 			}
 			
-			var $srcTrId = $event.srcElement.parentElement.parentElement.id;
-			var $srcTblId = $event.srcElement.parentElement.parentElement.parentElement.parentElement.id;
+			var $srcTrId = $event.target .parentElement.parentElement.id;
+			var $srcTblId = $event.target .parentElement.parentElement.parentElement.parentElement.id;
 			var $li = $('<li>');
 			if (item === null) {
 				$li.addClass('divider');
@@ -36,7 +36,7 @@ angular.module('testApp', [])
 
 					$event.preventDefault();
 					$scope.$apply(function () {
-						$(event.currentTarget).removeClass('context');
+						$($event.currentTarget).removeClass('context');
 						$contextMenu.remove();
 						item[1].call($scope, $scope,$srcTdId,$srcTrId,$srcTblId);
 					});

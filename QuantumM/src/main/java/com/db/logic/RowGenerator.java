@@ -2,10 +2,11 @@ package com.db.logic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import com.db.modal.D;
 import com.db.modal.RagnarRw;
-import com.model.conv.HTable;
 import com.model.parser.JCOL;
 import com.model.parser.JElement;
 import com.model.parser.JTable;
@@ -21,10 +22,26 @@ public class RowGenerator {
 		JTable jTable = (JTable) p.getTable();
 		System.out.println(jTable);
 		RowGenerator gen=new RowGenerator();
-		gen.insert(jTable);
+		List<RagnarRw> rows=new ArrayList<RagnarRw>();
+		gen.parse(jTable, rows,UUID.randomUUID().toString());
+		gen.insert(rows);
+		gen.getQuesListFromDb(rows);
 	}
 	
-	public void parse(JElement elements,List<RagnarRw> rows){
+
+
+	public void insert(List<RagnarRw> rows){
+		
+		for(RagnarRw dRow:rows){
+			System.out.println(dRow);
+		}
+		RagnarDTO  ragnarDTO=new RagnarDTO();
+		ragnarDTO.insert(rows);
+
+		TermExtractor termExtractor=new TermExtractor();
+		termExtractor.insert(rows);
+	}
+	public void parse(JElement elements,List<RagnarRw> rows, String sentenceId){
 		RagnarRw row=null;
 		for(int i=0;i<elements.getChild().size();i++){
 			JElement jElement = elements.getChild().get(i);
@@ -36,7 +53,7 @@ public class RowGenerator {
 			else
 				d=D.QUES;
 				
-			row=new RagnarRw();
+			row=new RagnarRw(sentenceId);
 			row.setD(d);
 			row.setId(String.valueOf(i));
 			rows.add(row);
@@ -55,7 +72,7 @@ public class RowGenerator {
 					//get table id
 					String tblId = ((JTable)jcol.getTable()).getId();
 					row.setRefTable(tblId);
-					parse(element,rows);
+					parse(element,rows,sentenceId);
 				}
 				//its a column
 				else{
@@ -64,14 +81,23 @@ public class RowGenerator {
 			}//end of else
 		}//end of for
 	}//end of method
-	
-	public void insert(JElement elements){
+
+	public void insert(JElement jTable, String sentenceId) {
 		List<RagnarRw> rows=new ArrayList<RagnarRw>();
-		parse(elements, rows);
-		for(RagnarRw dRow:rows){
-			System.out.println(dRow);
-		}
-		JDBCExample dbO=new JDBCExample();
-		//dbO.insert(rows);
+		parse(jTable, rows,sentenceId);
+		insert(rows);
 	}
+	
+	public  List<Map<String, List<String>>> getQuesListFromDb(JElement jTable, String sentenceId) {
+		List<RagnarRw> rows=new ArrayList<RagnarRw>();
+		parse(jTable, rows,sentenceId);
+		return getQuesListFromDb(rows);
+	}
+	
+	
+	public  List<Map<String, List<String>>> getQuesListFromDb(List<RagnarRw> rows) {
+		TermExtractor termExtractor=new TermExtractor();
+		return termExtractor.termsAndQuestionsFromDatabase(rows);
+	}
+	
 }

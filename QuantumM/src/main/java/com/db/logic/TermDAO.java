@@ -4,7 +4,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.db.modal.T;
@@ -21,6 +24,7 @@ public class TermDAO {
 	private PreparedStatement selectStTerm = null;
 	private PreparedStatement selectStQues = null;
 	private PreparedStatement slTerm_QuesStmt = null;
+	private PreparedStatement slFindlTerm_QuesStmt = null;
 
 	//  Database credentials
 	static final String USER = "root";
@@ -56,6 +60,17 @@ public class TermDAO {
 			sql="SELECT * FROM `dbprime`.`term_question` WHERE termId=? AND questionId=?";
 			slTerm_QuesStmt = conn.prepareStatement(sql);
 			
+			sql="SELECT  "
+					+ "q.val as ques "
+					+ "FROM dbprime.terms t,  dbprime.questions q, dbprime.term_question tq"+
+					" WHERE "
+					+ "t.id=tq.termId "+
+					" AND "
+					+"q.id= tq.questionId "
+					+" AND "
+					+"t.val=?";
+			
+			slFindlTerm_QuesStmt = conn.prepareStatement(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -63,10 +78,10 @@ public class TermDAO {
 	
 	public static void main(String[] args) {
 		TermDAO dao=new TermDAO();
-		T term = new T("gfgfg");
+		T term = new T("AA");
 		System.out.println(dao.isTermPresent(term));
 		//dao.insert(term);
-		System.out.println(dao.getTermId(term));
+		System.out.println(dao.getTermQuestions(term.getVal()));
 	}
 	public void insert(List<T> rows) {
 		for(T row : rows)
@@ -179,7 +194,7 @@ public class TermDAO {
 	}
 
 	public void addWitiwik(String termId, String quesId) {
-		if (isTerm_QuesPairPresent(termId, quesId)) {
+		if (!isTerm_QuesPairPresent(termId, quesId)) {
 			try {
 
 				insertStTQ.setString(1, UUID.randomUUID().toString());
@@ -207,6 +222,23 @@ public class TermDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public Map<String, List<String>> getTermQuestions(String term){
+		Map<String, List<String>> map =new HashMap<String, List<String>>();
+		 List<String> ques=new ArrayList<String>();
+		 map.put(term, ques);
+		ResultSet rs;
+		try {
+			slFindlTerm_QuesStmt.setString(1, term);
+			rs=slFindlTerm_QuesStmt.executeQuery();
+			while(rs.next()){
+				ques.add(rs.getString("ques"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
 	
 }//end JDBCExample

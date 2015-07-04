@@ -7,7 +7,11 @@ public class RagnarRw {
 	String row;
 	String val;
 	String refTable;
+	String senteceId;
 	
+	public RagnarRw(String sentenceId) {
+		this.senteceId=sentenceId;
+	}
 	public D getD() {
 		return d;
 	}
@@ -47,12 +51,19 @@ public class RagnarRw {
 	}
 	@Override
 	public String toString() {
-		return "DRow [" + (d != null ? "d=" + d + ", " : "")
+		return "RagnarRw [" + (d != null ? "d=" + d + ", " : "")
 				+ (id != null ? "id=" + id + ", " : "")
 				+ (table != null ? "table=" + table + ", " : "")
 				+ (row != null ? "row=" + row + ", " : "")
 				+ (val != null ? "val=" + val + ", " : "")
-				+ (refTable != null ? "refTable=" + refTable : "") + "]";
+				+ (refTable != null ? "refTable=" + refTable + ", " : "")
+				+ (senteceId != null ? "senteceId=" + senteceId : "") + "]";
+	}
+	public String getSenteceId() {
+		return senteceId;
+	}
+	public void setSenteceId(String senteceId) {
+		this.senteceId = senteceId;
 	}
 	
 	
